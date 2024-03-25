@@ -14,12 +14,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
 	children,
+	params,
 }: Readonly<{
 	children: React.ReactNode;
+	params: { locale: string };
 }>) {
 	return (
-		<html lang="en">
-			<body className={poppins.className}>{children}</body>
+		<html lang={params.locale ?? 'pt'}>
+			<body className={poppins.className} suppressHydrationWarning={true}>
+				{children}
+			</body>
 		</html>
 	);
 }
