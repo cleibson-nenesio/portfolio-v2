@@ -1,11 +1,17 @@
 // Next
-import { Inter, Poppins } from 'next/font/google';
+import { Poppins } from 'next/font/google';
 import type { Metadata } from 'next';
 
 // Styles
 import './globals.css';
 
-const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '700'] });
+// Components
+import Header from '@/components/global/Header';
+
+export const poppins = Poppins({
+	subsets: ['latin'],
+	weight: ['400', '500', '700'],
+});
 
 export const metadata: Metadata = {
 	title: 'Cleibson | Front End Developer',
@@ -21,7 +27,11 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang={params.locale ?? 'pt'}>
-			<body className={poppins.className} suppressHydrationWarning={true}>
+			<body
+				className={`${poppins.className} bg-background h-[2000px]`}
+				suppressHydrationWarning={true}
+			>
+				<Header params={params} />
 				{children}
 			</body>
 		</html>

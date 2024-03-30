@@ -5,10 +5,12 @@ const config: Config = {
 		'./src/pages/**/*.{js,ts,jsx,tsx,mdx}',
 		'./src/components/**/*.{js,ts,jsx,tsx,mdx}',
 		'./src/app/**/*.{js,ts,jsx,tsx,mdx}',
+		'./src/app/**/**/*.{js,ts,jsx,tsx,mdx}',
 	],
 	theme: {
 		extend: {
 			fontSize: {
+				['xl']: '24px',
 				['5xl']: '40px',
 				['6xl']: '44px',
 				['7xl']: '52px',
@@ -32,6 +34,9 @@ const config: Config = {
 
 				['background']: '#F0F0F0',
 				['background-dark']: '#303030',
+			},
+			maxWidth: {
+				['screen-max']: '1920px',
 			},
 		},
 	},
