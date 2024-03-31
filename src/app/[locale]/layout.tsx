@@ -7,6 +7,7 @@ import './globals.css';
 
 // Components
 import Header from '@/components/global/Header';
+import { CursorProvider } from '@/contexts/MouseContext';
 
 export const poppins = Poppins({
 	subsets: ['latin'],
@@ -30,9 +31,12 @@ export default function RootLayout({
 			<body
 				className={`${poppins.className} bg-background h-[2000px]`}
 				suppressHydrationWarning={true}
+				id={'cursor'}
 			>
-				<Header params={params} />
-				{children}
+				<CursorProvider>
+					<Header params={params} />
+					{children}
+				</CursorProvider>
 			</body>
 		</html>
 	);

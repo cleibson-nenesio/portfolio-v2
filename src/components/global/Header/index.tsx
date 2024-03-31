@@ -1,15 +1,12 @@
-// Next
-import { Poppins } from 'next/font/google';
-import Link from 'next/link';
-
 // Types
 import { HeaderProps, Path } from './types';
 
 // i18n
 import initTranslations from '../../../i18n';
-import MobileMenu from './MobileMenu';
 
-const poppins = Poppins({ subsets: ['latin'], weight: ['400'] });
+// Components
+import MobileMenu from './MobileMenu';
+import NavMenu from './NavMenu';
 
 export default async function Header({ params: { locale } }: HeaderProps) {
 	const { t } = await initTranslations(locale, ['home', 'common']);
@@ -41,23 +38,7 @@ export default async function Header({ params: { locale } }: HeaderProps) {
 
 			<MobileMenu paths={paths} />
 
-			<nav className="hidden md:block">
-				<ul className="flex items-center gap-[24px]">
-					{paths.map(({ label, path }, i) => (
-						<li key={i}>
-							<Link
-								href={path}
-								className={
-									'text-neutral-1000 relative before:absolute before:left-0 before:-bottom-0 before:bg-primary-400 before:transition-all before:w-0 before:h-[2px] hover:before:w-full'
-								}
-								style={poppins.style}
-							>
-								{label}
-							</Link>
-						</li>
-					))}
-				</ul>
-			</nav>
+			<NavMenu paths={paths} />
 		</header>
 	);
 }
