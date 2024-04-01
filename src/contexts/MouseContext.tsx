@@ -1,10 +1,10 @@
 'use client';
 
 // React
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useRef } from 'react';
 
 // Framer Motion
-import { motion, useMotionValue, useSpring, transform } from 'framer-motion';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 // Types
 import { MouseContextReturn } from '@/types';
@@ -31,19 +31,32 @@ function CursorProvider({ children }: { children: React.ReactNode }) {
 		'sticky'
 	);
 
+	const isFirstRender = useRef(0);
+
 	useEffect(() => {
 		if (!window) return;
 
+		if (isFirstRender.current == 0) {
+			getMouseFirstPosition();
+			isFirstRender.current++;
+		}
+
+		function handleOnContextMenu(e: MouseEvent) {
+			console.log(e);
+		}
+
 		window.addEventListener('mousemove', getCursorPosition);
+		window.addEventListener('contextmenu', handleOnContextMenu);
 
 		return () => {
 			window.removeEventListener('mousemove', getCursorPosition);
+			window.removeEventListener('contextmenu', handleOnContextMenu);
 		};
 	}, [isHovered, currentElement]);
 
 	const mouse = {
-		x: useMotionValue(0),
-		y: useMotionValue(0),
+		x: useMotionValue(3000),
+		y: useMotionValue(500),
 	};
 
 	const smoothOptions = { damping: 20, stiffness: 300, mass: 0.5 };
@@ -69,14 +82,12 @@ function CursorProvider({ children }: { children: React.ReactNode }) {
 				};
 
 				mouse.x.set(left + distance.x * 0.1);
-				mouse.y.set(
-					center.y - cursorSize.height / 2 + distance.y * 0.1
-				);
+				mouse.y.set(top + distance.y * 0.1);
 
-				setCursorSize((prevState) => ({
-					...prevState,
+				setCursorSize({
+					height,
 					width,
-				}));
+				});
 			}
 
 			if (animationType == 'increase') {
@@ -99,6 +110,21 @@ function CursorProvider({ children }: { children: React.ReactNode }) {
 		}
 	}
 
+	function getMouseFirstPosition() {
+		const defaultPosition = { x: 0, y: 0 };
+
+		if (!window) return defaultPosition;
+
+		const mainTitle = document.getElementById('main-title-dot');
+
+		if (!mainTitle) return defaultPosition;
+
+		const { left, top } = mainTitle?.getBoundingClientRect();
+
+		mouse.x.set(left);
+		mouse.y.set(top);
+	}
+
 	function setIsOverElement({
 		isHovered,
 		element,
@@ -117,11 +143,12 @@ function CursorProvider({ children }: { children: React.ReactNode }) {
 		<CursorContext.Provider
 			value={{
 				setIsOverElement,
+				getMouseFirstPosition,
 			}}
 		>
 			{children}
 			<motion.div
-				className={`fixed top-0 left-0 z-[99999999] rounded-full border border-neutral-400 pointer-events-none`}
+				className={`hidden md:flex fixed top-0 left-0 z-[99999999] rounded-full border border-neutral-400 pointer-events-none`}
 				animate={{
 					width: cursorSize.width,
 					height: cursorSize.height,
@@ -131,7 +158,7 @@ function CursorProvider({ children }: { children: React.ReactNode }) {
 					top: smoothMouse.y,
 					width: cursorSize.width,
 					height: cursorSize.height,
-					backgroundColor: '#F9F9F9',
+					backgroundColor: 'rgb(244, 237, 217)',
 					borderRadius: '99999px',
 					mixBlendMode: 'difference',
 				}}

@@ -3,6 +3,13 @@
 @tailwind utilities;
 
 * {
-	cursor: none;
+	cursor: auto;
 	scroll-behavior: smooth;
+	scroll-padding-top: 84px;
+}
+
+@media (min-width: 768px) {
+	* {
+		cursor: none;
+	}
 }

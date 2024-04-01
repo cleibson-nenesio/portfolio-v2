@@ -8,4 +8,10 @@ export interface MouseContextReturn {
 		element: HTMLElement | null;
 		animation?: 'increase' | 'sticky';
 	}): void;
+	getMouseFirstPosition():
+		| {
+				x: number;
+				y: number;
+		  }
+		| undefined;
 }

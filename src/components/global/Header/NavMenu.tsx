@@ -13,7 +13,7 @@ export default function NavMenu({ paths }: { paths: Path[] }) {
 	const { setIsOverElement } = useCursor();
 
 	return (
-		<nav className="hidden md:block">
+		<nav className="hidden md:flex items-center">
 			<ul className="flex items-center gap-[24px]">
 				{paths.map(({ label, path }, i) => (
 					<li key={i}>
